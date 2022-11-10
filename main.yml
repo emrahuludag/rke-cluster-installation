@@ -1,0 +1,44 @@
+---
+- hosts: allnode
+  become: yes
+  tasks:
+    - name: Install requirements (swap,etc,folders)
+      include_role:
+        name: requirements
+        tasks_from: requirements.yml
+
+- hosts: master-firstnode
+  become: yes
+  tasks:
+    - name: Include vars
+      include_vars:
+        dir: vars
+
+    - name: Install RKE2 Master Server
+      include_role:
+        name: installation
+        tasks_from: install_master.yml     
+
+- hosts: master-nextnodes
+  become: yes
+  tasks:
+    - name: Include vars
+      include_vars:
+        dir: vars
+
+    - name: Install RKE2 Next Master Nodes
+      include_role:
+        name: installation
+        tasks_from: join_master.yml  
+
+- hosts: workers
+  become: yes
+  tasks:
+    - name: Include vars
+      include_vars:
+        dir: vars
+
+    - name: Install RKE2 Next Master Nodes
+      include_role:
+        name: installation
+        tasks_from: join_worker.yml  

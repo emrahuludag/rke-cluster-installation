@@ -1,0 +1,16 @@
+##Installing ENV
+confvar: "/var/lib/rancher/rke2/server"
+confdir: "/etc/rancher/rke2"
+conffile: "{{ confdir }}/config.yaml"
+clustername: "test"
+kubeconfig: "/etc/rancher/rke2/rke2.yaml"
+
+
+##UI ENV
+helm: "raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3"
+helm_repo: "https://releases.rancher.com/server-charts/stable"
+jetstack_repo: "https://charts.jetstack.io"
+cert_manager: "https://github.com/jetstack/cert-manager/releases/download/v1.6.1/cert-manager.crds.yaml"
+jetstack: "https://charts.jetstack.io"
+rancher_domain: "{{ rancher.acikkaynakfikirler.com }}"
+rancher_password: 'test1'

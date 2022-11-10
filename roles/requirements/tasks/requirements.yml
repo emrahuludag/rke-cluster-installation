@@ -1,0 +1,46 @@
+---
+ - name: Disable SELinux
+   selinux:
+    state: disabled
+
+ - name: Swapoff
+   shell: swapoff -a
+
+ - name: Disable Swap permanently
+   replace:
+     path: /etc/fstab
+     regexp: '^(\s*)([^#\n]+\s+)(\w+\s+)swap(\s+.*)$'
+     replace: '#\1\2\3swap\4'
+     backup: yes
+
+ - name: Network Requirements
+   shell: |
+     sudo cat << EOF | sudo tee /etc/modules-load.d/containerd.conf 
+     overlay 
+     br_netfilter 
+     EOF
+     sudo cat << EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf 
+     net.ipv4.ip_forward = 1 
+     net.bridge.bridge-nf-call-iptables = 1 
+     net.bridge.bridge-nf-call-ip6tables = 1 
+     EOF
+     sudo modprobe overlay
+     sudo modprobe br_netfilter 
+     sudo sysctl --system
+
+ - name: Install Kubernetes Python dependencies
+   pip:      
+    name: kubernetes
+      #- name: Add a line to /etc/hosts
+      #  lineinfile:
+      #    path: /etc/hosts
+      #    line: "{{ item }}"
+      #    insertafter: EOF
+      #  loop: "{{ my_range }}"
+      #    - name: Create /etc/rancher/rke2 folder
+      #      file:
+      #        state: directory
+      #        path: /etc/rancher/rke2
+      #        owner: root
+      #        group: root
+      #        mode: '0755'
