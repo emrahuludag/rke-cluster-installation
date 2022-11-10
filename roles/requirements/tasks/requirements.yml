@@ -31,16 +31,3 @@
  - name: Install Kubernetes Python dependencies
    pip:      
     name: kubernetes
-      #- name: Add a line to /etc/hosts
-      #  lineinfile:
-      #    path: /etc/hosts
-      #    line: "{{ item }}"
-      #    insertafter: EOF
-      #  loop: "{{ my_range }}"
-      #    - name: Create /etc/rancher/rke2 folder
-      #      file:
-      #        state: directory
-      #        path: /etc/rancher/rke2
-      #        owner: root
-      #        group: root
-      #        mode: '0755'
